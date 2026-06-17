@@ -7,15 +7,12 @@
       />
       <div class="hero-overlay">
         <div>
-          <div class="hero-badge">Featured Experience</div>
-          <h1>The Future of <span>Global FinTech</span> 2024</h1>
-          <p>
-            Join over 5,000 industry leaders for the most influential financial technology
-            conference of the year.
-          </p>
+          <div class="hero-badge">{{ $t('hero.badge') }}</div>
+          <h1>{{ $t('hero.titlePre') }} <span>{{ $t('hero.titleHighlight') }}</span> {{ $t('hero.titlePost') }}</h1>
+          <p>{{ $t('hero.subtitle') }}</p>
           <div class="hero-actions">
-            <button class="btn-hero">Register Now</button>
-            <button class="btn-ghost">View Agenda</button>
+            <button class="btn-hero">{{ $t('hero.registerNow') }}</button>
+            <button class="btn-ghost">{{ $t('hero.viewAgenda') }}</button>
           </div>
         </div>
       </div>
@@ -29,7 +26,8 @@
 </template>
 
 <script setup lang="ts">
-// Static hero section, no logic needed
+import { useI18n } from 'vue-i18n'
+const { t: $t } = useI18n()
 </script>
 
 <style scoped>

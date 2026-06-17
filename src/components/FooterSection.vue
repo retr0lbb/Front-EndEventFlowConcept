@@ -3,20 +3,21 @@
     <div class="footer-inner">
       <div class="footer-brand">
         <div class="logo">EventFlow<span class="logo-dot">.</span></div>
-        <p>© 2024 EventFlow Ecosystem. All rights reserved.</p>
+        <p>{{ $t('footer.copyright') }}</p>
       </div>
       <div class="footer-links">
-        <a href="#">Privacy Policy</a>
-        <a href="#">Terms of Service</a>
-        <a href="#">Help Center</a>
-        <a href="#">API Docs</a>
+        <a href="#">{{ $t('footer.privacy') }}</a>
+        <a href="#">{{ $t('footer.terms') }}</a>
+        <a href="#">{{ $t('footer.help') }}</a>
+        <a href="#">{{ $t('footer.api') }}</a>
       </div>
     </div>
   </footer>
 </template>
 
 <script setup lang="ts">
-// Static footer, no logic needed
+import { useI18n } from 'vue-i18n'
+const { t: $t } = useI18n()
 </script>
 
 <style scoped>

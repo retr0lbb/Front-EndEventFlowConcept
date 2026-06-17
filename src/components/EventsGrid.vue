@@ -2,9 +2,9 @@
   <section class="section">
     <div class="section-header">
       <div>
-        <div class="section-label">— Upcoming</div>
-        <h2>Upcoming Events</h2>
-        <p>Handpicked experiences tailored for you</p>
+        <div class="section-label">{{ $t('events.label') }}</div>
+        <h2>{{ $t('events.title') }}</h2>
+        <p>{{ $t('events.subtitle') }}</p>
       </div>
       <div style="display: flex; align-items: center; gap: 1rem">
         <div class="view-toggle">
@@ -16,7 +16,7 @@
           </button>
         </div>
         <a href="#" class="view-all"
-          >View All
+          >{{ $t('events.viewAll') }}
           <span class="material-symbols-outlined" style="font-size: 1rem">arrow_forward</span></a
         >
       </div>
@@ -68,21 +68,21 @@
               <div class="expanded-stat">
                 <span class="material-symbols-outlined">schedule</span>
                 <div>
-                  <span class="stat-label">Duration</span>
+                  <span class="stat-label">{{ $t('events.duration') }}</span>
                   <span class="stat-value">{{ event.duration }}</span>
                 </div>
               </div>
               <div class="expanded-stat">
                 <span class="material-symbols-outlined">confirmation_number</span>
                 <div>
-                  <span class="stat-label">Price</span>
+                  <span class="stat-label">{{ $t('events.price') }}</span>
                   <span class="stat-value">{{ event.price }}</span>
                 </div>
               </div>
             </div>
 
             <div class="expanded-speakers">
-              <span class="stat-label">Speakers</span>
+              <span class="stat-label">{{ $t('events.speakers') }}</span>
               <div class="speaker-chips">
                 <span v-for="s in event.speakers" :key="s" class="speaker-chip">{{ s }}</span>
               </div>
@@ -90,7 +90,7 @@
 
             <div class="expanded-cta">
               <span class="material-symbols-outlined">open_in_new</span>
-              View full details
+              {{ $t('events.viewDetails') }}
             </div>
           </div>
         </div>
@@ -98,7 +98,7 @@
     </div>
 
     <div class="load-more-wrap">
-      <button class="btn-outline">Load More Events</button>
+      <button class="btn-outline">{{ $t('events.loadMore') }}</button>
     </div>
   </section>
 </template>
@@ -106,6 +106,9 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import { RouterLink } from 'vue-router'
+import { useI18n } from 'vue-i18n'
+
+const { t: $t } = useI18n()
 
 interface Event {
   id: number

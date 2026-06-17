@@ -4,18 +4,21 @@
       <RouterLink to="/" class="logo">EventFlow<span class="logo-dot">.</span></RouterLink>
 
       <nav class="desktop-nav">
-        <a href="#" class="active">Discover</a>
-        <a href="#">Schedule</a>
-        <a href="#">Speakers</a>
-        <a href="#">Venues</a>
+        <a href="#" class="active">{{ $t('nav.discover') }}</a>
+        <a href="#">{{ $t('nav.schedule') }}</a>
+        <a href="#">{{ $t('nav.speakers') }}</a>
+        <a href="#">{{ $t('nav.venues') }}</a>
       </nav>
 
       <div class="nav-actions">
+        <button class="lang-toggle" @click="toggleLocale" :title="currentLocale === 'pt' ? 'Switch to English' : 'Mudar para Português'">
+          {{ currentLocale === 'pt' ? 'EN' : 'PT' }}
+        </button>
         <button class="theme-toggle" @click="toggle" :title="isDark ? 'Switch to light mode' : 'Switch to dark mode'">
           <span class="theme-emoji">{{ isDark ? '🌙' : '☀️' }}</span>
         </button>
-        <RouterLink to="/login" class="btn-signin desktop-only">Sign In</RouterLink>
-        <RouterLink to="/create-event" class="btn-primary desktop-only">Create Event</RouterLink>
+        <RouterLink to="/login" class="btn-signin desktop-only">{{ $t('nav.signIn') }}</RouterLink>
+        <RouterLink to="/create-event" class="btn-primary desktop-only">{{ $t('nav.createEvent') }}</RouterLink>
         <button class="icon-btn desktop-only">
           <span class="material-symbols-outlined">notifications</span>
         </button>
@@ -40,14 +43,17 @@
     <Transition name="drawer">
       <div v-if="menuOpen" class="mobile-drawer">
         <nav class="drawer-nav">
-          <a href="#" class="active" @click="menuOpen = false">Discover</a>
-          <a href="#" @click="menuOpen = false">Schedule</a>
-          <a href="#" @click="menuOpen = false">Speakers</a>
-          <a href="#" @click="menuOpen = false">Venues</a>
+          <a href="#" class="active" @click="menuOpen = false">{{ $t('nav.discover') }}</a>
+          <a href="#" @click="menuOpen = false">{{ $t('nav.schedule') }}</a>
+          <a href="#" @click="menuOpen = false">{{ $t('nav.speakers') }}</a>
+          <a href="#" @click="menuOpen = false">{{ $t('nav.venues') }}</a>
         </nav>
         <div class="drawer-actions">
-          <RouterLink to="/login" class="btn-signin-full" @click="menuOpen = false">Sign In</RouterLink>
-          <RouterLink to="/create-event" class="btn-primary-full" @click="menuOpen = false">Create Event</RouterLink>
+          <RouterLink to="/login" class="btn-signin-full" @click="menuOpen = false">{{ $t('nav.signIn') }}</RouterLink>
+          <RouterLink to="/create-event" class="btn-primary-full" @click="menuOpen = false">{{ $t('nav.createEvent') }}</RouterLink>
+          <button class="lang-toggle-full" @click="toggleLocale">
+            {{ currentLocale === 'pt' ? '🌐 English' : '🌐 Português' }}
+          </button>
         </div>
       </div>
     </Transition>
@@ -55,13 +61,21 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, onUnmounted } from 'vue'
+import { ref, computed, onMounted, onUnmounted } from 'vue'
 import { RouterLink } from 'vue-router'
+import { useI18n } from 'vue-i18n'
 import { useTheme } from '@/composables/useTheme'
+import { setLocale } from '@/i18n'
 
 const { isDark, toggle } = useTheme()
+const { t: $t, locale } = useI18n()
 const menuOpen = ref(false)
 const hidden = ref(false)
+
+const currentLocale = computed(() => locale.value)
+function toggleLocale() {
+  setLocale(locale.value === 'pt' ? 'en' : 'pt')
+}
 
 let lastY = 0
 function onScroll() {
@@ -159,6 +173,28 @@ header.hidden {
   gap: 1rem;
 }
 
+.lang-toggle {
+  height: 38px;
+  padding: 0 0.75rem;
+  border-radius: 8px;
+  border: 1px solid var(--border-strong);
+  background: var(--bg-elevated);
+  color: var(--text-muted);
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  cursor: pointer;
+  transition: all 0.2s;
+  flex-shrink: 0;
+}
+
+.lang-toggle:hover {
+  border-color: var(--emerald-border);
+  color: var(--emerald);
+  background: var(--emerald-glow);
+}
+
 .theme-toggle {
   width: 38px;
   height: 38px;
@@ -245,6 +281,7 @@ header.hidden {
   .desktop-nav { display: none; }
   .desktop-only { display: none !important; }
   .hamburger { display: flex; }
+  .lang-toggle { display: none; }
 }
 </style>
 
@@ -339,6 +376,28 @@ header.hidden {
 
 .btn-primary-full:hover {
   background: var(--emerald-dim);
+}
+
+.lang-toggle-full {
+  display: block;
+  width: 100%;
+  padding: 0.8rem;
+  border: 1px solid var(--border-strong);
+  border-radius: 10px;
+  background: var(--bg-elevated);
+  color: var(--text-muted);
+  font-family: 'DM Sans', sans-serif;
+  font-weight: 600;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: all 0.2s;
+  text-align: center;
+}
+
+.lang-toggle-full:hover {
+  color: var(--emerald);
+  border-color: var(--emerald-border);
+  background: var(--emerald-glow);
 }
 
 /* Transições do drawer */

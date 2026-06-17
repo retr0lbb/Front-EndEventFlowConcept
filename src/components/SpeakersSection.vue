@@ -3,12 +3,12 @@
     <div class="section-inner">
       <div class="section-header">
         <div>
-          <div class="section-label">— Highlights</div>
-          <h2>Featured Events</h2>
-          <p>Don't miss the experiences everyone is talking about</p>
+          <div class="section-label">{{ $t('featured.label') }}</div>
+          <h2>{{ $t('featured.title') }}</h2>
+          <p>{{ $t('featured.subtitle') }}</p>
         </div>
         <a href="#" class="view-all">
-          View All
+          {{ $t('featured.viewAll') }}
           <span class="material-symbols-outlined">arrow_forward</span>
         </a>
       </div>
@@ -69,6 +69,9 @@
 <script setup lang="ts">
 import { ref, onUnmounted } from 'vue'
 import { RouterLink } from 'vue-router'
+import { useI18n } from 'vue-i18n'
+
+const { t: $t } = useI18n()
 
 const events = [
   {

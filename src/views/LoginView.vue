@@ -4,7 +4,7 @@
 
     <RouterLink to="/" class="back-btn">
       <span class="material-symbols-outlined">arrow_back</span>
-      Back to home
+      {{ $t('login.back') }}
     </RouterLink>
 
     <div class="login-container">
@@ -13,12 +13,12 @@
           <RouterLink to="/" class="logo">EventFlow<span class="logo-dot">.</span></RouterLink>
         </div>
 
-        <h1>Welcome Back</h1>
-        <p class="subtitle">Sign in to manage your events</p>
+        <h1>{{ $t('login.title') }}</h1>
+        <p class="subtitle">{{ $t('login.subtitle') }}</p>
 
         <form @submit.prevent="handleLogin">
           <div class="form-group">
-            <label for="email">Email</label>
+            <label for="email">{{ $t('login.email') }}</label>
             <div class="input-wrap">
               <span class="material-symbols-outlined input-icon">mail</span>
               <input
@@ -33,7 +33,7 @@
           </div>
 
           <div class="form-group">
-            <label for="password">Password</label>
+            <label for="password">{{ $t('login.password') }}</label>
             <div class="input-wrap">
               <span class="material-symbols-outlined input-icon">lock</span>
               <input
@@ -53,13 +53,13 @@
           <div class="form-options">
             <label class="checkbox">
               <input v-model="rememberMe" type="checkbox" />
-              <span>Remember me</span>
+              <span>{{ $t('login.rememberMe') }}</span>
             </label>
-            <a href="#" class="forgot-link">Forgot password?</a>
+            <a href="#" class="forgot-link">{{ $t('login.forgotPassword') }}</a>
           </div>
 
           <button type="submit" class="btn-login">
-            Sign In
+            {{ $t('login.signIn') }}
             <span class="material-symbols-outlined">arrow_forward</span>
           </button>
         </form>
@@ -79,8 +79,8 @@
 
         <div class="signup-section">
           <p>
-            Don't have an account?
-            <RouterLink to="/register" class="signup-link">Create one free</RouterLink>
+            {{ $t('login.noAccount') }}
+            <RouterLink to="/register" class="signup-link">{{ $t('login.register') }}</RouterLink>
           </p>
         </div>
       </div>
@@ -91,6 +91,9 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import { RouterLink } from 'vue-router'
+import { useI18n } from 'vue-i18n'
+
+const { t: $t } = useI18n()
 
 const email = ref('')
 const password = ref('')

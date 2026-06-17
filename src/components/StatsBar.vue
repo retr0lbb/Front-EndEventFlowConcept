@@ -10,12 +10,17 @@
 </template>
 
 <script setup lang="ts">
-const stats = [
-  { value: '12k+', label: 'Events Created' },
-  { value: '80k+', label: 'Attendees' },
-  { value: '140+', label: 'Cities' },
-  { value: '4.9★', label: 'Avg. Rating' },
-]
+import { computed } from 'vue'
+import { useI18n } from 'vue-i18n'
+
+const { t } = useI18n()
+
+const stats = computed(() => [
+  { value: '12k+', label: t('stats.eventsCreated') },
+  { value: '80k+', label: t('stats.attendees') },
+  { value: '140+', label: t('stats.cities') },
+  { value: '4.9★', label: t('stats.avgRating') },
+])
 </script>
 
 <style scoped>

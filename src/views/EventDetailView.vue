@@ -9,13 +9,13 @@
 
       <RouterLink to="/" class="back-btn">
         <span class="material-symbols-outlined">arrow_back</span>
-        Back
+        {{ $t('eventDetail.back') }}
       </RouterLink>
 
       <div class="hero-content">
         <div class="hero-badges">
           <span class="badge-cat">{{ event.category }}</span>
-          <span class="badge-status" :class="event.status">{{ event.statusLabel }}</span>
+          <span class="badge-status" :class="event.status">{{ $t(`eventDetail.status.${event.status}`, $t('eventDetail.status.open')) }}</span>
         </div>
         <h1>{{ event.title }}</h1>
         <div class="hero-meta">
@@ -46,14 +46,14 @@
 
           <!-- About -->
           <section class="detail-section">
-            <h2 class="section-title">About this event</h2>
+            <h2 class="section-title">{{ $t('eventDetail.about') }}</h2>
             <p class="detail-desc">{{ event.description }}</p>
             <p class="detail-desc">{{ event.descriptionLong }}</p>
           </section>
 
           <!-- What to expect -->
           <section class="detail-section">
-            <h2 class="section-title">What to expect</h2>
+            <h2 class="section-title">{{ $t('eventDetail.whatToExpect') }}</h2>
             <div class="highlights-grid">
               <div v-for="h in event.highlights" :key="h.label" class="highlight-card">
                 <span class="material-symbols-outlined highlight-icon">{{ h.icon }}</span>
@@ -67,7 +67,7 @@
 
           <!-- Speakers -->
           <section class="detail-section">
-            <h2 class="section-title">Speakers</h2>
+            <h2 class="section-title">{{ $t('eventDetail.speakers') }}</h2>
             <div class="speakers-list">
               <div v-for="s in event.speakerDetails" :key="s.name" class="speaker-card">
                 <div class="speaker-avatar">{{ s.initials }}</div>
@@ -81,7 +81,7 @@
 
           <!-- Location -->
           <section class="detail-section">
-            <h2 class="section-title">Location</h2>
+            <h2 class="section-title">{{ $t('eventDetail.location') }}</h2>
             <div class="location-card">
               <span class="material-symbols-outlined">location_on</span>
               <div>
@@ -97,43 +97,43 @@
           <div class="ticket-card">
             <div class="ticket-header">
               <div class="ticket-price">{{ event.price }}</div>
-              <div class="ticket-label">per person</div>
+              <div class="ticket-label">{{ $t('eventDetail.perPerson') }}</div>
             </div>
 
             <div class="ticket-info">
               <div class="ticket-row">
                 <span class="material-symbols-outlined">calendar_today</span>
                 <div>
-                  <span class="t-label">Date</span>
+                  <span class="t-label">{{ $t('eventDetail.date') }}</span>
                   <span class="t-value">{{ event.day }} {{ event.monthFull }}, {{ event.year }}</span>
                 </div>
               </div>
               <div class="ticket-row">
                 <span class="material-symbols-outlined">schedule</span>
                 <div>
-                  <span class="t-label">Time</span>
+                  <span class="t-label">{{ $t('eventDetail.time') }}</span>
                   <span class="t-value">{{ event.time }}</span>
                 </div>
               </div>
               <div class="ticket-row">
                 <span class="material-symbols-outlined">hourglass_empty</span>
                 <div>
-                  <span class="t-label">Duration</span>
+                  <span class="t-label">{{ $t('eventDetail.duration') }}</span>
                   <span class="t-value">{{ event.duration }}</span>
                 </div>
               </div>
               <div class="ticket-row">
                 <span class="material-symbols-outlined">group</span>
                 <div>
-                  <span class="t-label">Attendees</span>
-                  <span class="t-value">{{ event.attendees }} registered</span>
+                  <span class="t-label">{{ $t('eventDetail.attendees') }}</span>
+                  <span class="t-value">{{ event.attendees }} {{ $t('eventDetail.registered') }}</span>
                 </div>
               </div>
             </div>
 
             <div class="capacity-bar-wrap">
               <div class="capacity-bar-labels">
-                <span>Spots left</span>
+                <span>{{ $t('eventDetail.spotsLeft') }}</span>
                 <span class="capacity-num">{{ event.spotsLeft }}</span>
               </div>
               <div class="capacity-bar">
@@ -143,12 +143,12 @@
 
             <button class="btn-register" @click="handleRegister">
               <span class="material-symbols-outlined">confirmation_number</span>
-              Register Now
+              {{ $t('eventDetail.registerNow') }}
             </button>
 
             <button class="btn-share" @click="handleShare">
               <span class="material-symbols-outlined">share</span>
-              Share Event
+              {{ $t('eventDetail.shareEvent') }}
             </button>
           </div>
 
@@ -165,6 +165,9 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 import { useRoute, RouterLink } from 'vue-router'
+import { useI18n } from 'vue-i18n'
+
+const { t: $t } = useI18n()
 
 const route = useRoute()
 const id = Number(route.params.id)

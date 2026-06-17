@@ -4,7 +4,7 @@
 
     <RouterLink to="/" class="back-btn">
       <span class="material-symbols-outlined">arrow_back</span>
-      Back to home
+      {{ $t('register.back') }}
     </RouterLink>
 
     <div class="register-container">
@@ -13,13 +13,13 @@
           <RouterLink to="/" class="logo">EventFlow<span class="logo-dot">.</span></RouterLink>
         </div>
 
-        <h1>Create Account</h1>
-        <p class="subtitle">Join thousands of event creators worldwide</p>
+        <h1>{{ $t('register.title') }}</h1>
+        <p class="subtitle">{{ $t('register.subtitle') }}</p>
 
         <form @submit.prevent="handleRegister">
           <div class="form-row">
             <div class="form-group">
-              <label for="firstName">First Name</label>
+              <label for="firstName">{{ $t('register.firstName') }}</label>
               <div class="input-wrap">
                 <span class="material-symbols-outlined input-icon">person</span>
                 <input
@@ -33,7 +33,7 @@
               </div>
             </div>
             <div class="form-group">
-              <label for="lastName">Last Name</label>
+              <label for="lastName">{{ $t('register.lastName') }}</label>
               <div class="input-wrap">
                 <span class="material-symbols-outlined input-icon">person</span>
                 <input
@@ -49,7 +49,7 @@
           </div>
 
           <div class="form-group">
-            <label for="email">Email</label>
+            <label for="email">{{ $t('register.email') }}</label>
             <div class="input-wrap">
               <span class="material-symbols-outlined input-icon">mail</span>
               <input
@@ -64,7 +64,7 @@
           </div>
 
           <div class="form-group">
-            <label for="password">Password</label>
+            <label for="password">{{ $t('register.password') }}</label>
             <div class="input-wrap">
               <span class="material-symbols-outlined input-icon">lock</span>
               <input
@@ -83,7 +83,7 @@
           </div>
 
           <div class="form-group">
-            <label for="confirmPassword">Confirm Password</label>
+            <label for="confirmPassword">{{ $t('register.confirmPassword') }}</label>
             <div class="input-wrap">
               <span class="material-symbols-outlined input-icon">lock_reset</span>
               <input
@@ -105,15 +105,15 @@
           <label class="terms-check">
             <input v-model="form.terms" type="checkbox" required />
             <span>
-              I agree to the
-              <a href="#" class="link">Terms of Service</a>
-              and
-              <a href="#" class="link">Privacy Policy</a>
+              {{ $t('register.terms') }}
+              <a href="#" class="link">{{ $t('register.termsLink') }}</a>
+              {{ $t('register.and') }}
+              <a href="#" class="link">{{ $t('register.privacyLink') }}</a>
             </span>
           </label>
 
           <button type="submit" class="btn-register" :disabled="passwordMismatch || !form.terms">
-            Create Account
+            {{ $t('register.createAccount') }}
             <span class="material-symbols-outlined">arrow_forward</span>
           </button>
         </form>
@@ -140,8 +140,8 @@
 
         <div class="login-section">
           <p>
-            Already have an account?
-            <RouterLink to="/login" class="link-bold">Sign in</RouterLink>
+            {{ $t('register.haveAccount') }}
+            <RouterLink to="/login" class="link-bold">{{ $t('register.signIn') }}</RouterLink>
           </p>
         </div>
       </div>
@@ -152,7 +152,10 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue'
 import { RouterLink } from 'vue-router'
+import { useI18n } from 'vue-i18n'
 import PasswordStrength from '@/components/PasswordStrength.vue'
+
+const { t: $t } = useI18n()
 
 const form = ref({
   firstName: '',
@@ -185,22 +188,6 @@ const handleRegister = () => {
   background: var(--bg);
   padding: 5rem 1rem 2rem;
   position: relative;
-}
-
-@media (max-width: 480px) {
-  .register-card {
-    padding: 2rem 1.3rem;
-    border-radius: 16px;
-  }
-
-  .form-row {
-    grid-template-columns: 1fr;
-  }
-
-  .back-btn {
-    top: 1rem;
-    left: 1rem;
-  }
 }
 
 .register-bg-glow {
@@ -510,5 +497,21 @@ label {
 
 .link-bold:hover {
   color: var(--emerald-dim);
+}
+
+@media (max-width: 480px) {
+  .register-card {
+    padding: 2rem 1.3rem;
+    border-radius: 16px;
+  }
+
+  .form-row {
+    grid-template-columns: 1fr;
+  }
+
+  .back-btn {
+    top: 1rem;
+    left: 1rem;
+  }
 }
 </style>

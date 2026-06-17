@@ -4,15 +4,15 @@
       <div class="search-row">
         <div class="search-input-wrap">
           <span class="material-symbols-outlined search-icon">search</span>
-          <input class="search-input" type="text" placeholder="Find your next experience..." />
+          <input class="search-input" type="text" :placeholder="$t('search.placeholder')" />
         </div>
         <button class="filter-btn">
           <span class="material-symbols-outlined" style="font-size: 1.1rem">calendar_today</span>
-          Any Date
+          {{ $t('search.anyDate') }}
         </button>
         <button class="filter-btn">
           <span class="material-symbols-outlined" style="font-size: 1.1rem">category</span>
-          Category
+          {{ $t('search.category') }}
         </button>
         <button class="filter-btn-icon">
           <span class="material-symbols-outlined" style="font-size: 1.1rem">tune</span>
@@ -34,7 +34,9 @@
 
 <script setup lang="ts">
 import { ref } from 'vue'
+import { useI18n } from 'vue-i18n'
 
+const { t: $t } = useI18n()
 const chips = ['#Technology', '#Wellness', '#Business', '#Music', '#Workshops']
 const activeChip = ref('#Technology')
 </script>

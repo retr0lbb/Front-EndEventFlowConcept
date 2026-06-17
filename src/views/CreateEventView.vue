@@ -4,15 +4,15 @@
 
     <RouterLink to="/" class="back-btn">
       <span class="material-symbols-outlined">arrow_back</span>
-      Back to home
+      {{ $t('createEvent.back') }}
     </RouterLink>
 
     <div class="create-container">
       <!-- Header -->
       <div class="page-header">
         <div class="logo">EventFlow<span class="logo-dot">.</span></div>
-        <h1>Create Event</h1>
-        <p>Fill in the details below to publish your event</p>
+        <h1>{{ $t('createEvent.title') }}</h1>
+        <p>{{ $t('createEvent.subtitle') }}</p>
       </div>
 
       <!-- Step indicator -->
@@ -43,19 +43,19 @@
             <div class="step-header">
               <span class="step-icon">🎯</span>
               <div>
-                <h2>About the Event</h2>
-                <p>Give your event a name and description</p>
+                <h2>{{ $t('createEvent.steps.about') }}</h2>
+                <p>{{ $t('createEvent.fields.eventNamePlaceholder') }}</p>
               </div>
             </div>
             <div class="fields">
               <div class="form-group">
-                <label>Event Name <span class="required">*</span></label>
+                <label>{{ $t('createEvent.fields.eventName') }} <span class="required">*</span></label>
                 <div class="input-wrap">
                   <span class="material-symbols-outlined input-icon">edit</span>
                   <input
                     v-model="form.nome"
                     type="text"
-                    placeholder="e.g. Global FinTech Summit 2025"
+                    :placeholder="$t('createEvent.fields.eventNamePlaceholder')"
                     class="form-input"
                     required
                     maxlength="100"
@@ -65,11 +65,11 @@
               </div>
 
               <div class="form-group">
-                <label>Description <span class="required">*</span></label>
+                <label>{{ $t('createEvent.fields.description') }} <span class="required">*</span></label>
                 <div class="textarea-wrap">
                   <textarea
                     v-model="form.descricao"
-                    placeholder="Describe what attendees can expect..."
+                    :placeholder="$t('createEvent.fields.descriptionPlaceholder')"
                     class="form-textarea"
                     rows="5"
                     maxlength="1000"
@@ -85,26 +85,26 @@
             <div class="step-header">
               <span class="step-icon">📍</span>
               <div>
-                <h2>Location & Capacity</h2>
-                <p>Where will it happen and how many can attend?</p>
+                <h2>{{ $t('createEvent.steps.location') }}</h2>
+                <p>{{ $t('createEvent.fields.addressPlaceholder') }}</p>
               </div>
             </div>
             <div class="fields">
               <div class="form-group">
-                <label>Address <span class="required">*</span></label>
+                <label>{{ $t('createEvent.fields.address') }} <span class="required">*</span></label>
                 <div class="input-wrap">
                   <span class="material-symbols-outlined input-icon">location_on</span>
                   <input
                     v-model="form.endereco"
                     type="text"
-                    placeholder="e.g. Av. Paulista, 1000 - São Paulo, SP"
+                    :placeholder="$t('createEvent.fields.addressPlaceholder')"
                     class="form-input"
                   />
                 </div>
               </div>
 
               <div class="form-group">
-                <label>Max Participants <span class="required">*</span></label>
+                <label>{{ $t('createEvent.fields.maxParticipants') }} <span class="required">*</span></label>
                 <div class="input-wrap">
                   <span class="material-symbols-outlined input-icon">group</span>
                   <input
@@ -128,13 +128,13 @@
             <div class="step-header">
               <span class="step-icon">📅</span>
               <div>
-                <h2>Dates & Times</h2>
-                <p>When does the event start and end?</p>
+                <h2>{{ $t('createEvent.steps.dates') }}</h2>
+                <p>{{ $t('createEvent.fields.startDate') }}</p>
               </div>
             </div>
             <div class="fields">
               <div class="form-group">
-                <label>Start Date & Time <span class="required">*</span></label>
+                <label>{{ $t('createEvent.fields.startDate') }} <span class="required">*</span></label>
                 <div class="input-wrap">
                   <span class="material-symbols-outlined input-icon">calendar_today</span>
                   <input
@@ -146,7 +146,7 @@
               </div>
 
               <div class="form-group">
-                <label>End Date & Time <span class="required">*</span></label>
+                <label>{{ $t('createEvent.fields.endDate') }} <span class="required">*</span></label>
                 <div class="input-wrap">
                   <span class="material-symbols-outlined input-icon">event_available</span>
                   <input
@@ -170,14 +170,14 @@
             <div class="step-header">
               <span class="step-icon">🖼️</span>
               <div>
-                <h2>Banner & Status</h2>
-                <p>Upload a cover image and set the event status</p>
+                <h2>{{ $t('createEvent.steps.media') }}</h2>
+                <p>{{ $t('createEvent.fields.eventBanner') }}</p>
               </div>
             </div>
             <div class="fields">
               <!-- File upload -->
               <div class="form-group">
-                <label>Event Banner</label>
+                <label>{{ $t('createEvent.fields.eventBanner') }}</label>
                 <div
                   class="file-drop"
                   :class="{ 'has-file': bannerPreview, dragging: isDragging }"
@@ -201,7 +201,7 @@
                       </button>
                       <div class="preview-overlay">
                         <span class="material-symbols-outlined">photo_camera</span>
-                        Change image
+                        {{ $t('createEvent.fields.changeBanner') }}
                       </div>
                     </div>
                     <div v-else key="placeholder" class="file-placeholder">
@@ -240,8 +240,8 @@
             <div class="step-header">
               <span class="step-icon">✅</span>
               <div>
-                <h2>Review & Publish</h2>
-                <p>Check everything before publishing</p>
+                <h2>{{ $t('createEvent.review.title') }}</h2>
+                <p>{{ $t('createEvent.review.subtitle') }}</p>
               </div>
             </div>
             <div class="review-grid">
@@ -250,31 +250,31 @@
               </div>
               <div class="review-items">
                 <div class="review-item">
-                  <span class="review-label">Name</span>
+                  <span class="review-label">{{ $t('createEvent.review.eventName') }}</span>
                   <span class="review-value">{{ form.nome || '—' }}</span>
                 </div>
                 <div class="review-item">
-                  <span class="review-label">Description</span>
+                  <span class="review-label">{{ $t('createEvent.review.description') }}</span>
                   <span class="review-value review-desc">{{ form.descricao || '—' }}</span>
                 </div>
                 <div class="review-item">
-                  <span class="review-label">Address</span>
+                  <span class="review-label">{{ $t('createEvent.review.location') }}</span>
                   <span class="review-value">{{ form.endereco || '—' }}</span>
                 </div>
                 <div class="review-item">
-                  <span class="review-label">Capacity</span>
-                  <span class="review-value">{{ form.max_participants ? form.max_participants.toLocaleString() + ' participants' : '—' }}</span>
+                  <span class="review-label">{{ $t('createEvent.review.capacity') }}</span>
+                  <span class="review-value">{{ form.max_participants ? form.max_participants.toLocaleString() + ' ' + $t('createEvent.review.people') : '—' }}</span>
                 </div>
                 <div class="review-item">
-                  <span class="review-label">Starts</span>
+                  <span class="review-label">{{ $t('createEvent.review.startDate') }}</span>
                   <span class="review-value">{{ formatDate(form.starts_at) }}</span>
                 </div>
                 <div class="review-item">
-                  <span class="review-label">Ends</span>
+                  <span class="review-label">{{ $t('createEvent.review.endDate') }}</span>
                   <span class="review-value">{{ formatDate(form.ends_at) }}</span>
                 </div>
                 <div class="review-item">
-                  <span class="review-label">Status</span>
+                  <span class="review-label">{{ $t('createEvent.review.status') }}</span>
                   <span class="review-value">
                     <span class="status-dot" :class="form.status"></span>
                     {{ statusOptions.find(o => o.value === form.status)?.label || '—' }}
@@ -289,16 +289,16 @@
         <div class="form-nav">
           <button v-if="currentStep > 0" class="btn-back" @click="goBack">
             <span class="material-symbols-outlined">arrow_back</span>
-            Back
+            {{ $t('createEvent.nav.back') }}
           </button>
           <div class="nav-right">
             <button v-if="currentStep < steps.length - 1" class="btn-next" @click="goNext">
-              Next
+              {{ $t('createEvent.nav.next') }}
               <span class="material-symbols-outlined">arrow_forward</span>
             </button>
             <button v-else class="btn-publish" @click="handleSubmit">
               <span class="material-symbols-outlined">rocket_launch</span>
-              Publish Event
+              {{ $t('createEvent.nav.publish') }}
             </button>
           </div>
         </div>
@@ -310,22 +310,25 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue'
 import { RouterLink } from 'vue-router'
+import { useI18n } from 'vue-i18n'
 
-const steps = [
-  { label: 'About' },
-  { label: 'Location' },
-  { label: 'Dates' },
-  { label: 'Media' },
-  { label: 'Review' },
-]
+const { t: $t } = useI18n()
 
-const statusOptions = [
-  { value: 'draft',     label: 'Draft',     desc: 'Not visible to the public yet' },
-  { value: 'published', label: 'Published', desc: 'Visible and open for registration' },
-  { value: 'started',   label: 'Started',   desc: 'Event is currently happening' },
-  { value: 'finished',  label: 'Finished',  desc: 'Event has ended' },
-  { value: 'cancelled', label: 'Cancelled', desc: 'Event was cancelled' },
-]
+const steps = computed(() => [
+  { label: $t('createEvent.steps.about') },
+  { label: $t('createEvent.steps.location') },
+  { label: $t('createEvent.steps.dates') },
+  { label: $t('createEvent.steps.media') },
+  { label: $t('createEvent.steps.review') },
+])
+
+const statusOptions = computed(() => [
+  { value: 'draft',     label: $t('createEvent.status.draft'),     desc: $t('createEvent.status.draftDesc') },
+  { value: 'published', label: $t('createEvent.status.published'), desc: $t('createEvent.status.publishedDesc') },
+  { value: 'started',   label: $t('createEvent.status.started'),   desc: $t('createEvent.status.startedDesc') },
+  { value: 'finished',  label: $t('createEvent.status.finished'),  desc: $t('createEvent.status.finishedDesc') },
+  { value: 'cancelled', label: $t('createEvent.status.cancelled'), desc: $t('createEvent.status.cancelledDesc') },
+])
 
 const form = ref({
   nome: '',
@@ -345,8 +348,8 @@ const isDragging = ref(false)
 const fileInput = ref<HTMLInputElement | null>(null)
 
 const progressWidth = computed(() => {
-  if (steps.length <= 1) return '0%'
-  return `${(currentStep.value / (steps.length - 1)) * 100}%`
+  if (steps.value.length <= 1) return '0%'
+  return `${(currentStep.value / (steps.value.length - 1)) * 100}%`
 })
 
 const duration = computed(() => {
@@ -362,7 +365,7 @@ const duration = computed(() => {
 
 function goNext() {
   slideRight.value = false
-  if (currentStep.value < steps.length - 1) currentStep.value++
+  if (currentStep.value < steps.value.length - 1) currentStep.value++
 }
 
 function goBack() {
