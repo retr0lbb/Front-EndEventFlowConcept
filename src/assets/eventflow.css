@@ -83,6 +83,8 @@ h4 {
 }
 
 .btn-primary {
+  display: inline-flex;
+  align-items: center;
   background: var(--emerald);
   color: #fff;
   border: none;
@@ -93,6 +95,7 @@ h4 {
   font-size: 0.875rem;
   cursor: pointer;
   transition: background 0.2s, box-shadow 0.2s;
+  text-decoration: none;
 }
 
 .btn-primary:hover {

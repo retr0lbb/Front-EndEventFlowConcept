@@ -15,7 +15,7 @@
           <span class="theme-emoji">{{ isDark ? '🌙' : '☀️' }}</span>
         </button>
         <RouterLink to="/login" class="btn-signin desktop-only">Sign In</RouterLink>
-        <button class="btn-primary desktop-only">Create Event</button>
+        <RouterLink to="/create-event" class="btn-primary desktop-only">Create Event</RouterLink>
         <button class="icon-btn desktop-only">
           <span class="material-symbols-outlined">notifications</span>
         </button>
@@ -47,7 +47,7 @@
         </nav>
         <div class="drawer-actions">
           <RouterLink to="/login" class="btn-signin-full" @click="menuOpen = false">Sign In</RouterLink>
-          <button class="btn-primary-full" @click="menuOpen = false">Create Event</button>
+          <RouterLink to="/create-event" class="btn-primary-full" @click="menuOpen = false">Create Event</RouterLink>
         </div>
       </div>
     </Transition>
@@ -306,6 +306,7 @@ header {
 }
 
 .btn-primary-full {
+  display: block;
   width: 100%;
   padding: 0.85rem;
   background: var(--emerald);
@@ -317,6 +318,8 @@ header {
   font-size: 0.9rem;
   cursor: pointer;
   transition: background 0.2s;
+  text-decoration: none;
+  text-align: center;
 }
 
 .btn-primary-full:hover {
