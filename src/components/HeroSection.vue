@@ -68,6 +68,28 @@
   transition: var(--transition-theme);
 }
 
+@media (max-width: 768px) {
+  .hero {
+    height: 420px;
+    margin-top: 1rem;
+  }
+
+  .hero-overlay {
+    padding: 2rem;
+    background: linear-gradient(
+      180deg,
+      var(--hero-overlay-start) 0%,
+      var(--hero-overlay-mid) 60%,
+      transparent 100%
+    );
+  }
+
+  .hero-dots {
+    bottom: 1rem;
+    right: 1.2rem;
+  }
+}
+
 .hero-badge {
   display: inline-flex;
   align-items: center;

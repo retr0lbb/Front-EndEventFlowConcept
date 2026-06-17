@@ -147,6 +147,19 @@ const events: Event[] = [
   padding: 4rem 2rem;
 }
 
+@media (max-width: 768px) {
+  .section {
+    padding: 3rem 1.2rem;
+  }
+
+  .section-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+  }
+}
+
 .section-header {
   display: flex;
   justify-content: space-between;

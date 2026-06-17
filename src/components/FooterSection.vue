@@ -65,6 +65,20 @@ footer {
   flex-wrap: wrap;
 }
 
+@media (max-width: 640px) {
+  .footer-inner {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    padding: 2rem 1.2rem;
+  }
+
+  .footer-links {
+    justify-content: center;
+    gap: 1.2rem;
+  }
+}
+
 .footer-links a {
   color: var(--text-dim);
   text-decoration: none;

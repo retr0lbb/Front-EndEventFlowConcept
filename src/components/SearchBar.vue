@@ -51,6 +51,32 @@ const activeChip = ref('#Technology')
   margin-right: auto;
 }
 
+@media (max-width: 768px) {
+  .search-bar {
+    margin: 0;
+    border-radius: 16px;
+    padding: 1.2rem 1rem;
+  }
+
+  .search-row {
+    flex-wrap: wrap;
+    gap: 0.6rem;
+  }
+
+  .search-input-wrap {
+    flex: 1 1 100%;
+  }
+
+  .filter-btn {
+    flex: 1;
+    justify-content: center;
+  }
+
+  .filter-btn-icon {
+    flex-shrink: 0;
+  }
+}
+
 .search-row {
   display: flex;
   gap: 1rem;

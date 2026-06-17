@@ -113,6 +113,18 @@ const handleLogin = () => {
   position: relative;
 }
 
+@media (max-width: 480px) {
+  .login-card {
+    padding: 2rem 1.3rem;
+    border-radius: 16px;
+  }
+
+  .back-btn {
+    top: 1rem;
+    left: 1rem;
+  }
+}
+
 .login-bg-glow {
   position: fixed;
   top: -200px;

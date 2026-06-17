@@ -26,6 +26,20 @@ import FooterSection from '@/components/FooterSection.vue'
 </template>
 
 <style scoped>
+main {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  padding: 1.5rem 0;
+}
+
+@media (max-width: 768px) {
+  main {
+    gap: 1rem;
+    padding: 1rem 1.2rem;
+  }
+}
+
 .fab {
   position: fixed;
   bottom: 2rem;

@@ -66,6 +66,12 @@ const stats = [
   font-weight: 500;
 }
 
+@media (max-width: 768px) {
+  .stats-wrap {
+    padding: 0 1.2rem;
+  }
+}
+
 @media (max-width: 640px) {
   .stats-bar {
     grid-template-columns: repeat(2, 1fr);
@@ -78,6 +84,10 @@ const stats = [
   .stat-item:nth-child(1),
   .stat-item:nth-child(2) {
     border-bottom: 1px solid var(--border);
+  }
+
+  .stat-value {
+    font-size: 1.3rem;
   }
 }
 </style>

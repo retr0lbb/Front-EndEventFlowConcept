@@ -58,7 +58,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ref, onUnmounted } from 'vue'
 
 const speakers = [
   {
@@ -103,12 +103,33 @@ function next() {
   current.value = (current.value + 1) % speakers.length
 }
 
+const isMobile = ref(window.innerWidth <= 640)
+
+const onResize = () => { isMobile.value = window.innerWidth <= 640 }
+window.addEventListener('resize', onResize)
+onUnmounted(() => window.removeEventListener('resize', onResize))
+
 const CARD_W = 260
 const GAP = 60
+const CARD_W_MOBILE = 200
+const GAP_MOBILE = 24
 
 function cardStyle(i: number): Record<string, string | number> {
   const offset = i - current.value
   const abs = Math.abs(offset)
+
+  if (isMobile.value) {
+    const tx = offset * (CARD_W_MOBILE + GAP_MOBILE)
+    const scale = abs === 0 ? 1 : Math.max(0.82, 1 - abs * 0.1)
+    const opacity = abs > 1 ? 0 : abs === 1 ? 0.5 : 1
+    return {
+      transform: `translateX(${tx}px) scale(${scale})`,
+      zIndex: 20 - abs,
+      opacity,
+      pointerEvents: abs > 1 ? 'none' : 'auto',
+      width: `${CARD_W_MOBILE}px`,
+    }
+  }
 
   const tx = offset * (CARD_W * 0.58 + GAP)
   const tz = abs === 0 ? 0 : -abs * 100
@@ -292,6 +313,24 @@ function cardStyle(i: number): Record<string, string | number> {
 .speaker-card.active .card-topic {
   background: var(--emerald-glow);
   border-color: var(--emerald-border);
+}
+
+@media (max-width: 640px) {
+  .section-inner {
+    padding: 0 1.2rem;
+  }
+
+  .section-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem;
+    margin-bottom: 2rem;
+  }
+
+  .coverflow-scene {
+    height: 340px;
+    perspective: 600px;
+  }
 }
 
 /* ── Nav ── */

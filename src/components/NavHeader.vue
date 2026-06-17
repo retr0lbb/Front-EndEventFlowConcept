@@ -2,34 +2,65 @@
   <header>
     <div class="nav-inner">
       <RouterLink to="/" class="logo">EventFlow<span class="logo-dot">.</span></RouterLink>
-      <nav>
+
+      <nav class="desktop-nav">
         <a href="#" class="active">Discover</a>
         <a href="#">Schedule</a>
         <a href="#">Speakers</a>
         <a href="#">Venues</a>
       </nav>
+
       <div class="nav-actions">
-        <button class="theme-toggle" :class="{ light: !isDark }" @click="toggle" :title="isDark ? 'Switch to light mode' : 'Switch to dark mode'">
+        <button class="theme-toggle" @click="toggle" :title="isDark ? 'Switch to light mode' : 'Switch to dark mode'">
           <span class="theme-emoji">{{ isDark ? '🌙' : '☀️' }}</span>
         </button>
-        <RouterLink to="/login" class="btn-signin">Sign In</RouterLink>
-        <button class="btn-primary">Create Event</button>
-        <button class="icon-btn">
+        <RouterLink to="/login" class="btn-signin desktop-only">Sign In</RouterLink>
+        <button class="btn-primary desktop-only">Create Event</button>
+        <button class="icon-btn desktop-only">
           <span class="material-symbols-outlined">notifications</span>
         </button>
-        <button class="icon-btn">
+        <button class="icon-btn desktop-only">
           <span class="material-symbols-outlined">account_circle</span>
+        </button>
+        <button class="hamburger" :class="{ open: menuOpen }" @click="menuOpen = !menuOpen" aria-label="Menu">
+          <span></span>
+          <span></span>
+          <span></span>
         </button>
       </div>
     </div>
   </header>
+
+  <!-- Mobile drawer renderizado fora do header para evitar problemas de stacking context -->
+  <Teleport to="body">
+    <Transition name="overlay">
+      <div v-if="menuOpen" class="mobile-overlay" @click="menuOpen = false"></div>
+    </Transition>
+
+    <Transition name="drawer">
+      <div v-if="menuOpen" class="mobile-drawer">
+        <nav class="drawer-nav">
+          <a href="#" class="active" @click="menuOpen = false">Discover</a>
+          <a href="#" @click="menuOpen = false">Schedule</a>
+          <a href="#" @click="menuOpen = false">Speakers</a>
+          <a href="#" @click="menuOpen = false">Venues</a>
+        </nav>
+        <div class="drawer-actions">
+          <RouterLink to="/login" class="btn-signin-full" @click="menuOpen = false">Sign In</RouterLink>
+          <button class="btn-primary-full" @click="menuOpen = false">Create Event</button>
+        </div>
+      </div>
+    </Transition>
+  </Teleport>
 </template>
 
 <script setup lang="ts">
+import { ref } from 'vue'
 import { RouterLink } from 'vue-router'
 import { useTheme } from '@/composables/useTheme'
 
 const { isDark, toggle } = useTheme()
+const menuOpen = ref(false)
 </script>
 
 <style scoped>
@@ -62,6 +93,8 @@ header {
   display: flex;
   align-items: center;
   gap: 0.4rem;
+  text-decoration: none;
+  flex-shrink: 0;
 }
 
 .logo-dot {
@@ -70,13 +103,13 @@ header {
   line-height: 1;
 }
 
-nav {
+.desktop-nav {
   display: flex;
   gap: 2rem;
   align-items: center;
 }
 
-nav a {
+.desktop-nav a {
   color: var(--text-muted);
   text-decoration: none;
   font-size: 0.9rem;
@@ -85,16 +118,16 @@ nav a {
   transition: color 0.2s;
 }
 
-nav a.active,
-nav a:hover {
+.desktop-nav a.active,
+.desktop-nav a:hover {
   color: var(--emerald);
 }
 
-nav a.active {
+.desktop-nav a.active {
   position: relative;
 }
 
-nav a.active::after {
+.desktop-nav a.active::after {
   content: '';
   position: absolute;
   bottom: -22px;
@@ -123,6 +156,7 @@ nav a.active::after {
   justify-content: center;
   transition: border-color 0.2s, background 0.2s, transform 0.2s;
   overflow: hidden;
+  flex-shrink: 0;
 }
 
 .theme-toggle:hover {
@@ -160,5 +194,151 @@ nav a.active::after {
   color: var(--emerald);
   border-color: var(--emerald-border);
   background: var(--emerald-glow);
+}
+
+/* ── Hamburger ── */
+.hamburger {
+  display: none;
+  flex-direction: column;
+  justify-content: center;
+  gap: 5px;
+  width: 36px;
+  height: 36px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 4px;
+  flex-shrink: 0;
+}
+
+.hamburger span {
+  display: block;
+  height: 2px;
+  background: var(--text);
+  border-radius: 2px;
+  transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  transform-origin: center;
+}
+
+.hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+.hamburger.open span:nth-child(2) { opacity: 0; transform: scaleX(0); }
+.hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+/* ── Mobile breakpoint ── */
+@media (max-width: 768px) {
+  .nav-inner { padding: 0 1.2rem; }
+  .desktop-nav { display: none; }
+  .desktop-only { display: none !important; }
+  .hamburger { display: flex; }
+}
+</style>
+
+<style>
+/* Estilos globais do drawer (fora do scoped pois é via Teleport no body) */
+.mobile-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.55);
+  z-index: 200;
+}
+
+.mobile-drawer {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: 280px;
+  background: var(--bg-card);
+  border-left: 1px solid var(--border-strong);
+  z-index: 201;
+  display: flex;
+  flex-direction: column;
+  padding: 5rem 1.5rem 2rem;
+  gap: 0;
+  overflow-y: auto;
+}
+
+.drawer-nav {
+  display: flex;
+  flex-direction: column;
+}
+
+.drawer-nav a {
+  color: var(--text-muted);
+  text-decoration: none;
+  font-size: 1.05rem;
+  font-weight: 500;
+  padding: 1rem 0;
+  border-bottom: 1px solid var(--border);
+  transition: color 0.2s;
+}
+
+.drawer-nav a.active,
+.drawer-nav a:hover {
+  color: var(--emerald);
+}
+
+.drawer-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+  margin-top: 2rem;
+}
+
+.btn-signin-full {
+  display: block;
+  text-align: center;
+  padding: 0.8rem;
+  border: 1px solid var(--border-strong);
+  border-radius: 10px;
+  color: var(--text-muted);
+  text-decoration: none;
+  font-family: 'DM Sans', sans-serif;
+  font-weight: 600;
+  font-size: 0.9rem;
+  transition: all 0.2s;
+}
+
+.btn-signin-full:hover {
+  color: var(--emerald);
+  border-color: var(--emerald-border);
+  background: var(--emerald-glow);
+}
+
+.btn-primary-full {
+  width: 100%;
+  padding: 0.85rem;
+  background: var(--emerald);
+  color: #fff;
+  border: none;
+  border-radius: 10px;
+  font-family: 'DM Sans', sans-serif;
+  font-weight: 600;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.btn-primary-full:hover {
+  background: var(--emerald-dim);
+}
+
+/* Transições do drawer */
+.drawer-enter-active,
+.drawer-leave-active {
+  transition: transform 0.35s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+.drawer-enter-from,
+.drawer-leave-to {
+  transform: translateX(100%);
+}
+
+.overlay-enter-active,
+.overlay-leave-active {
+  transition: opacity 0.3s;
+}
+.overlay-enter-from,
+.overlay-leave-to {
+  opacity: 0;
 }
 </style>

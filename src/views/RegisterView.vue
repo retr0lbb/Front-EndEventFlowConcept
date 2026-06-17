@@ -187,6 +187,22 @@ const handleRegister = () => {
   position: relative;
 }
 
+@media (max-width: 480px) {
+  .register-card {
+    padding: 2rem 1.3rem;
+    border-radius: 16px;
+  }
+
+  .form-row {
+    grid-template-columns: 1fr;
+  }
+
+  .back-btn {
+    top: 1rem;
+    left: 1rem;
+  }
+}
+
 .register-bg-glow {
   position: fixed;
   top: -200px;
