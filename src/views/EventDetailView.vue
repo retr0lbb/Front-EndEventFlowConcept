@@ -112,20 +112,64 @@
           </button>
         </div>
       </div>
+
+      <!-- Confirm registration modal -->
+      <Teleport to="body">
+        <div v-if="showModal" class="modal-overlay" @click.self="closeModal">
+          <div class="modal-card">
+            <div v-if="checkinMutation.isSuccess.value" class="modal-body">
+              <span class="modal-icon success">check_circle</span>
+              <h3 class="modal-title">{{ $t('eventDetail.registered') }}</h3>
+              <p class="modal-message">An email with your confirmation was sent. Please confirm it before all vacancies expire.</p>
+              <button class="modal-btn" @click="closeModal">OK</button>
+            </div>
+
+            <div v-else-if="checkinMutation.isError.value" class="modal-body">
+              <span class="modal-icon error">error</span>
+              <h3 class="modal-title">{{ $t('eventDetail.error') || 'Error' }}</h3>
+              <p class="modal-message">{{ checkinMutation.error.value?.message || 'Something went wrong' }}</p>
+              <div class="modal-actions">
+                <button class="modal-btn" @click="closeModal">Cancel</button>
+                <button class="modal-btn primary" @click="handleConfirmRegistration">Try Again</button>
+              </div>
+            </div>
+
+            <div v-else class="modal-body">
+              <span class="modal-icon">confirmation_number</span>
+              <h3 class="modal-title">Confirm Registration</h3>
+              <p class="modal-message">An email with your confirmation will be sent. Please confirm it before all vacancies expire.</p>
+              <button
+                class="modal-btn primary"
+                :disabled="checkinMutation.isPending.value"
+                @click="handleConfirmRegistration"
+              >
+                <span v-if="checkinMutation.isPending.value" class="material-symbols-outlined spinning">progress_activity</span>
+                <span v-else class="material-symbols-outlined">check</span>
+                {{ checkinMutation.isPending.value ? 'Registering...' : 'Confirm Registration' }}
+              </button>
+            </div>
+          </div>
+        </div>
+      </Teleport>
     </template>
   </div>
 </template>
 
 <script setup lang="ts">
-import { computed } from 'vue'
-import { useRoute, RouterLink } from 'vue-router'
+import { computed, ref } from 'vue'
+import { useRoute, useRouter, RouterLink } from 'vue-router'
 import { useI18n } from 'vue-i18n'
-import { useEvents } from '@/api/composables/useEvents'
+import { useEvents, useCheckin } from '@/api/composables/useEvents'
+import { useAuthToken } from '@/api/composables/useAuth'
 
 const { t: $t } = useI18n()
 const route = useRoute()
+const router = useRouter()
+const { isAuthenticated } = useAuthToken()
 
 const { data: events, isPending, isError, error } = useEvents()
+const checkinMutation = useCheckin()
+const showModal = ref(false)
 
 const event = computed(() => {
   if (!events.value) return undefined
@@ -172,7 +216,21 @@ const duration = computed(() => {
 
 function handleRegister() {
   if (!event.value) return
-  console.log('Register for event:', event.value.id)
+  if (!isAuthenticated.value) {
+    router.push('/login')
+    return
+  }
+  checkinMutation.reset()
+  showModal.value = true
+}
+
+function handleConfirmRegistration() {
+  if (!event.value) return
+  checkinMutation.mutate(event.value.id)
+}
+
+function closeModal() {
+  showModal.value = false
 }
 
 function handleShare() {
@@ -479,5 +537,112 @@ function handleShare() {
 .btn-share:hover {
   border-color: var(--border-strong);
   color: var(--text);
+}
+
+/* ── Modal ── */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(4px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  padding: 1rem;
+}
+
+.modal-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-strong);
+  border-radius: 20px;
+  padding: 2rem;
+  max-width: 420px;
+  width: 100%;
+  box-shadow: 0 30px 80px rgba(0, 0, 0, 0.5);
+}
+
+.modal-body {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.modal-icon {
+  font-size: 3rem !important;
+  color: var(--emerald);
+  margin-bottom: 1rem;
+}
+
+.modal-icon.success { color: #10b981; }
+.modal-icon.error { color: #ef4444; }
+
+.modal-title {
+  font-size: 1.15rem;
+  color: var(--text);
+  margin-bottom: 0.6rem;
+}
+
+.modal-message {
+  font-size: 0.88rem;
+  color: var(--text-muted);
+  line-height: 1.6;
+  margin-bottom: 1.5rem;
+}
+
+.modal-actions {
+  display: flex;
+  gap: 0.7rem;
+  width: 100%;
+}
+
+.modal-btn {
+  width: 100%;
+  padding: 0.75rem;
+  border-radius: 12px;
+  font-family: 'DM Sans', sans-serif;
+  font-weight: 700;
+  font-size: 0.9rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
+  transition: all 0.2s;
+  border: 1px solid var(--border);
+  background: var(--bg-elevated);
+  color: var(--text-muted);
+}
+
+.modal-btn:hover {
+  border-color: var(--border-strong);
+  color: var(--text);
+}
+
+.modal-btn.primary {
+  background: var(--emerald);
+  color: #fff;
+  border: none;
+  box-shadow: 0 0 20px var(--emerald-glow);
+}
+
+.modal-btn.primary:hover {
+  background: var(--emerald-dim);
+}
+
+.modal-btn.primary:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.modal-btn .material-symbols-outlined { font-size: 1rem; }
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+.spinning {
+  animation: spin 1s linear infinite;
 }
 </style>

@@ -1,5 +1,5 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/vue-query'
-import { getEvents, createEvent } from '../services/events'
+import { getEvents, createEvent, checkin, confirmCheckin } from '../services/events'
 import type { CreateEventPayload } from '../services/events'
 
 export function useEvents() {
@@ -25,5 +25,28 @@ export function useCreateEvent() {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['events'] })
     },
+  })
+}
+
+export function useCheckin() {
+  return useMutation({
+    mutationFn: async (eventId: string) => {
+      const res = await checkin(eventId)
+      if (res.error) throw new Error(res.error)
+      return res.data
+    },
+  })
+}
+
+export function useConfirmCheckin(id: string) {
+  return useQuery({
+    queryKey: ['checkin', id],
+    queryFn: async () => {
+      const res = await confirmCheckin(id)
+      if (res.error) throw new Error(res.error)
+      return res.data
+    },
+    retry: false,
+    gcTime: 0,
   })
 }

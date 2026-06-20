@@ -5,6 +5,7 @@ export default {
     speakers: 'Palestrantes',
     venues: 'Locais',
     signIn: 'Entrar',
+    signOut: 'Sair',
     createEvent: 'Criar Evento',
   },
 

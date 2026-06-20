@@ -1,6 +1,6 @@
 import { computed } from 'vue'
 import { useMutation } from '@tanstack/vue-query'
-import { signin, signup } from '../services/auth'
+import { signin, signup, refreshToken } from '../services/auth'
 
 const TOKEN_KEY = 'accessToken'
 
@@ -41,6 +41,22 @@ export function useSignup() {
       const res = await signup(payload)
       if (res.error) throw new Error(res.error)
       return res.data!
+    },
+  })
+}
+
+export function useRefreshToken() {
+  return useMutation({
+    mutationFn: async () => {
+      const res = await refreshToken()
+      if (res.error) throw new Error(res.error)
+      return res.data!
+    },
+    onSuccess: (data) => {
+      setStoredToken(data.accessToken)
+    },
+    onError: () => {
+      clearStoredToken()
     },
   })
 }

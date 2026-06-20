@@ -30,3 +30,9 @@ export function signin(payload: SigninPayload) {
     body: JSON.stringify(payload),
   })
 }
+
+export function refreshToken() {
+  return client<SigninResponse>('api/v1/auth/refresh', {
+    method: 'POST',
+  })
+}

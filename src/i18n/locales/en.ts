@@ -5,6 +5,7 @@ export default {
     speakers: 'Speakers',
     venues: 'Venues',
     signIn: 'Sign In',
+    signOut: 'Sign Out',
     createEvent: 'Create Event',
   },
 

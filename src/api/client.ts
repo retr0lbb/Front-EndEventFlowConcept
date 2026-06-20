@@ -3,6 +3,20 @@ interface ApiResponse<T> {
   error: string | null
 }
 
+let isRefreshing = false
+
+function getToken(): string | null {
+  return localStorage.getItem('accessToken')
+}
+
+function setToken(token: string): void {
+  localStorage.setItem('accessToken', token)
+}
+
+function clearToken(): void {
+  localStorage.removeItem('accessToken')
+}
+
 export async function client<T>(
   endpoint: string,
   options: RequestInit = {},
@@ -11,9 +25,10 @@ export async function client<T>(
   if(!import.meta.env.VITE_API_URL){
     throw new Error("API not found")
   }
-  const url = `${import.meta.env.VITE_API_URL}${endpoint}`
+  const baseUrl = import.meta.env.VITE_API_URL
+  const url = `${baseUrl}${endpoint}`
 
-  const token = localStorage.getItem('accessToken')
+  const token = getToken()
   const headers: Record<string, string> = {
     'Content-Type': 'application/json',
     ...(options.headers as Record<string, string>),
@@ -21,11 +36,38 @@ export async function client<T>(
   if (token) headers['Authorization'] = `Bearer ${token}`
 
   try {
-    const response = await fetch(url, {
+    let response = await fetch(url, {
       ...options,
       credentials: 'include',
       headers,
     })
+
+    if (response.status === 401 && !isRefreshing) {
+      isRefreshing = true
+      try {
+        const refreshRes = await fetch(`${baseUrl}api/v1/auth/refresh`, {
+          method: 'POST',
+          credentials: 'include',
+          headers: { 'Content-Type': 'application/json' },
+        })
+
+        if (refreshRes.ok) {
+          const body = await refreshRes.json()
+          setToken(body.accessToken)
+          headers['Authorization'] = `Bearer ${body.accessToken}`
+          response = await fetch(url, {
+            ...options,
+            credentials: 'include',
+            headers,
+          })
+        } else {
+          clearToken()
+          return { data: null, error: 'Session expired. Please sign in again.' }
+        }
+      } finally {
+        isRefreshing = false
+      }
+    }
 
     if (!response.ok) {
       const body = await response.json().catch(() => null)

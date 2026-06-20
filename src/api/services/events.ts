@@ -34,3 +34,14 @@ export function createEvent(payload: CreateEventPayload) {
     body: JSON.stringify(payload),
   })
 }
+
+export function checkin(eventId: string) {
+  return client<null>('api/v1/checkin', {
+    method: 'POST',
+    body: JSON.stringify({ eventId }),
+  })
+}
+
+export function confirmCheckin(id: string) {
+  return client<null>(`api/v1/checkin/${id}`)
+}
